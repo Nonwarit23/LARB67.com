@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Web Player Clone</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-spotify bg-custom-base text-white h-screen flex flex-col overflow-hidden">
+
+    <!-- Main Container -->
+    <div class="flex flex-1 h-[calc(100vh-90px)] p-2 gap-2 overflow-hidden">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-custom-surface rounded-lg p-4 flex flex-col justify-between hidden md:flex">
+            <div class="space-y-6">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 px-2 text-custom-primary cursor-pointer">
+                    <i class="fa-brands fa-spotify text-3xl"></i>
+                    <span class="text-xl font-bold tracking-wider text-white">MusicPlayer</span>
+                </div>
+
+                <!-- Main Menu -->
+                <nav class="space-y-2">
+                    <button onclick="switchTab('home')" id="nav-home" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-md text-white font-medium bg-custom-elevated hover:bg-custom-elevated transition">
+                        <i class="fa-solid fa-house text-lg"></i>
+                        <span>หน้าหลัก</span>
+                    </button>
+                    <button onclick="switchTab('search')" id="nav-search" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-md text-gray-400 hover:text-white font-medium hover:bg-custom-elevated transition">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                        <span>ค้นหา</span>
+                    </button>
+                    <button onclick="switchTab('favorites')" id="nav-favorites" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-md text-gray-400 hover:text-white font-medium hover:bg-custom-elevated transition">
+                        <i class="fa-solid fa-heart text-lg text-red-500"></i>
+                        <span>เพลงที่ถูกใจ</span>
+                    </button>
+                </nav>
+
+                <hr class="border-custom">
+
+                <!-- Theme Selector Section -->
+                <div>
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-3 px-2">
+                        <i class="fa-solid fa-palette mr-1"></i> เปลี่ยนธีม (Theme)
+                    </label>
+                    <div class="grid grid-cols-2 gap-2 px-1">
+                        <button onclick="setTheme('spotify')" class="p-2 text-xs rounded border border-gray-700 hover:border-green-500 flex items-center gap-2 bg-[#121212]">
+                            <span class="w-3 h-3 rounded-full bg-[#1db954]"></span> Spotify
+                        </button>
+                        <button onclick="setTheme('cyberpunk')" class="p-2 text-xs rounded border border-gray-700 hover:border-pink-500 flex items-center gap-2 bg-[#0f051d]">
+                            <span class="w-3 h-3 rounded-full bg-[#ff007f]"></span> Cyber
+                        </button>
+                        <button onclick="setTheme('neon-blue')" class="p-2 text-xs rounded border border-gray-700 hover:border-cyan-500 flex items-center gap-2 bg-[#030d1a]">
+                            <span class="w-3 h-3 rounded-full bg-[#00d2ff]"></span> Neon
+                        </button>
+                        <button onclick="setTheme('sunset')" class="p-2 text-xs rounded border border-gray-700 hover:border-orange-500 flex items-center gap-2 bg-[#1a0c16]">
+                            <span class="w-3 h-3 rounded-full bg-[#ff5e36]"></span> Sunset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Track Mini Card Sidebar -->
+            <div id="sidebar-track-info" class="p-3 bg-custom-elevated rounded-lg flex items-center gap-3 hidden">
+                <img id="sidebar-cover" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop" class="w-12 h-12 rounded object-cover" alt="หน้าปก">
+                <div class="overflow-hidden">
+                    <p id="sidebar-title" class="text-sm font-semibold truncate">ชื่อเพลง</p>
+                    <p id="sidebar-artist" class="text-xs text-gray-400 truncate">ศิลปิน</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content View -->
+        <main class="flex-1 bg-custom-surface rounded-lg flex flex-col overflow-hidden relative">
+            
+            <!-- Header Bar -->
+            <header class="p-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-custom sticky top-0 z-10">
+                <div class="flex items-center gap-3 flex-1 max-w-md">
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden text-2xl text-gray-300 mr-2" onclick="toggleMobileMenu()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    
+                    <!-- Search Input -->
+                    <div class="relative w-full">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-input" oninput="handleSearch()" placeholder="ค้นหาเพลง, ศิลปิน..." 
+                            class="w-full bg-custom-elevated pl-10 pr-4 py-2 rounded-full text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+                    </div>
+                </div>
+
+                <!-- Right Side Header Controls -->
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleLyricsView()" id="lyrics-btn" class="p-2 rounded-full bg-custom-elevated text-gray-300 hover:text-white transition" title="เนื้อเพลง">
+                        <i class="fa-solid fa-quote-right"></i>
+                    </button>
+                    <div class="flex items-center gap-2 bg-custom-elevated px-3 py-1.5 rounded-full">
+                        <i class="fa-solid fa-user text-xs"></i>
+                        <span class="text-xs font-semibold">ผู้ใช้ทั่วไป</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Area -->
+            <div id="content-area" class="flex-1 overflow-y-auto p-6">
+                
+                <!-- HOME VIEW -->
+                <section id="view-home">
+                    <div class="bg-gradient-to-r from-green-800 to-black/60 rounded-xl p-6 mb-8 flex items-center justify-between shadow-lg">
+                        <div>
+                            <span class="bg-white/20 text-xs px-2.5 py-1 rounded-full uppercase font-bold tracking-wider mb-2 inline-block">พเลย์ลิสต์แนะนำ</span>
+                            <h1 class="text-3xl md:text-4xl font-extrabold mb-2">รวมเพลงฮิตฟังชิลล์</h1>
+                            <p class="text-gray-200 text-sm mb-4">ฟังเพลงต่อเนื่อง สบายๆ ได้ตลอดทั้งวัน</p>
+                            <button onclick="playSong(0)" class="bg-custom-primary text-black font-bold px-6 py-2.5 rounded-full hover:scale-105 transition flex items-center gap-2 shadow-md">
+                                <i class="fa-solid fa-play"></i> เล่นทั้งหมด
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold mb-4">รายชื่อเพลงทั้งหมด</h2>
+                        <div id="song-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                            <!-- Songs Cards -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEARCH VIEW -->
+                <section id="view-search" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">ผลการค้นหา</h2>
+                    <div id="search-results" class="space-y-2"></div>
+                </section>
+
+                <!-- FAVORITES VIEW -->
+                <section id="view-favorites" class="hidden">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-heart text-3xl text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold">เพลงที่ถูกใจ</h1>
+                            <p id="fav-count" class="text-sm text-gray-400">0 เพลง</p>
+                        </div>
+                    </div>
+                    <div id="favorites-list" class="space-y-2"></div>
+                </section>
+
+                <!-- LYRICS VIEW -->
+                <section id="view-lyrics" class="hidden min-h-full flex flex-col items-center justify-center text-center p-4">
+                    <div class="max-w-xl w-full">
+                        <img id="lyrics-cover" src="" class="w-48 h-48 rounded-lg shadow-2xl mx-auto mb-6 object-cover" alt="Cover">
+                        <h2 id="lyrics-title" class="text-2xl font-bold mb-1">--</h2>
+                        <p id="lyrics-artist" class="text-gray-400 mb-8">--</p>
+                        
+                        <div id="lyrics-box" class="space-y-4 max-h-60 overflow-y-auto p-4 bg-black/20 rounded-xl"></div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/80 z-50 flex flex-col p-6 hidden md:hidden">
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center gap-3 text-custom-primary">
+                <i class="fa-brands fa-spotify text-3xl"></i>
+                <span class="text-xl font-bold text-white">MusicPlayer</span>
+            </div>
+            <button onclick="toggleMobileMenu()" class="text-2xl text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav class="space-y-4">
+            <button onclick="switchTab('home'); toggleMobileMenu()" class="w-full flex items-center gap-4 text-lg p-2">
+                <i class="fa-solid fa-house"></i> หน้าหลัก
+            </button>
+            <button onclick="switchTab('search'); toggleMobileMenu()" class="w-full flex items-center gap-4 text-lg p-2">
+                <i class="fa-solid fa-magnifying-glass"></i> ค้นหา
+            </button>
+            <button onclick="switchTab('favorites'); toggleMobileMenu()" class="w-full flex items-center gap-4 text-lg p-2">
+                <i class="fa-solid fa-heart text-red-500"></i> เพลงที่ถูกใจ
+            </button>
+        </nav>
+        <div class="mt-auto">
+            <p class="text-sm font-semibold mb-3">เปลี่ยนธีม:</p>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="setTheme('spotify')" class="p-2 text-xs rounded bg-gray-800">Spotify</button>
+                <button onclick="setTheme('cyberpunk')" class="p-2 text-xs rounded bg-gray-800">Cyberpunk</button>
+                <button onclick="setTheme('neon-blue')" class="p-2 text-xs rounded bg-gray-800">Neon Blue</button>
+                <button onclick="setTheme('sunset')" class="p-2 text-xs rounded bg-gray-800">Sunset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Bottom Bar -->
+    <footer class="h-[90px] bg-custom-base border-t border-custom px-4 flex items-center justify-between z-20 relative">
+        <div class="flex items-center gap-3 w-1/4 min-w-[180px]">
+            <img id="player-cover" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop" class="w-14 h-14 rounded object-cover bg-gray-800 shadow-md" alt="Cover">
+            <div class="overflow-hidden">
+                <div id="player-title" class="text-sm font-semibold truncate hover:underline cursor-pointer">เลือกเพลงเพื่อเล่น</div>
+                <div id="player-artist" class="text-xs text-gray-400 truncate hover:underline cursor-pointer">--</div>
+            </div>
+            <button onclick="toggleFavoriteCurrent()" id="player-fav-btn" class="text-gray-400 hover:text-red-500 transition ml-2">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+        </div>
+
+        <div class="flex flex-col items-center gap-1.5 w-2/4 max-w-xl">
+            <div class="flex items-center gap-6">
+                <button id="btn-shuffle" onclick="toggleShuffle()" class="text-gray-400 hover:text-white transition text-sm" title="สุ่มเพลง">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="prevSong()" class="text-gray-300 hover:text-white transition text-lg" title="เพลงก่อนหน้า">
+                    <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <button id="btn-play" onclick="togglePlayPause()" class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition shadow" title="เล่น/หยุด">
+                    <i class="fa-solid fa-play text-lg pl-0.5"></i>
+                </button>
+                <button onclick="nextSong()" class="text-gray-300 hover:text-white transition text-lg" title="เพลงถัดไป">
+                    <i class="fa-solid fa-forward-step"></i>
+                </button>
+                <button id="btn-repeat" onclick="toggleRepeat()" class="text-gray-400 hover:text-white transition text-sm" title="วนซ้ำ">
+                    <i class="fa-solid fa-repeat"></i>
+                </button>
+            </div>
+
+            <div class="w-full flex items-center gap-2 text-xs text-gray-400 range-container">
+                <span id="current-time">0:00</span>
+                <input type="range" id="seek-slider" min="0" max="100" value="0" class="w-full h-1" oninput="seekTo(this.value)">
+                <span id="duration-time">0:00</span>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 w-1/4">
+            <div class="flex items-center gap-2 range-container w-32">
+                <button onclick="toggleMute()" id="btn-volume" class="text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.7" class="w-full h-1" oninput="setVolume(this.value)">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="audio-player"></audio>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
