@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Arcade</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">🎮 MINI<span>ARCADE</span></div>
+  <nav>
+    <a class="active" href="#">เกม</a>
+    <a href="#games">ยอดนิยม</a>
+    <a href="#howto">วิธีเล่น</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <small>🔥 เกมแนะนำวันนี้</small>
+      <h1>DODGE<br><span>RUSH</span></h1>
+      <p>หลบดาวตก เก็บเหรียญ และทำคะแนนให้สูงที่สุด</p>
+      <button onclick="openGame('dodge-rush')">▶ เล่นเกม</button>
+    </div>
+    <div class="hero-art">🚀 ☄️ 🪙</div>
+  </section>
+
+  <section id="games">
+    <div class="section-head">
+      <div>
+        <h2>เกมทั้งหมด</h2>
+        <p>เลือกเกมที่อยากเล่นได้เลย</p>
+      </div>
+      <input id="search" placeholder="🔎 ค้นหาเกม...">
+    </div>
+
+    <div class="games">
+      <article class="card" data-name="dodge rush">
+        <div class="thumb blue">🚀</div>
+        <div class="info">
+          <h3>Dodge Rush</h3><p>Arcade • Action</p>
+          <button onclick="openGame('dodge-rush')">เล่น</button>
+        </div>
+      </article>
+
+      <article class="card" data-name="neon racer">
+        <div class="thumb purple">🏎️</div>
+        <div class="info">
+          <h3>Neon Racer</h3><p>Racing • Speed</p>
+          <button onclick="openGame('neon-racer')">เล่น</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="howto" class="howto">
+    <h2>วิธีใช้งาน</h2>
+    <p>เลือกเกม → เกมจะเปิดในหน้าต่างเล่น → กด <b>⌂ หน้าเกม</b> เพื่อกลับมาหน้านี้</p>
+  </section>
+</main>
+
+<div id="gameModal" class="modal hidden">
+  <div class="game-box">
+    <div class="game-bar">
+      <b id="gameTitle">Game</b>
+      <button onclick="closeGame()">✕</button>
+    </div>
+    <iframe id="gameFrame" title="Game"></iframe>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
