@@ -1,48 +1,76 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Racer</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Arcade</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="top">
-        <b>🏎️ Neon Racer</b>
-        <button onclick="goHome()">⌂ หน้าเกม</button>
+<header class="topbar">
+  <div class="logo">🎮 MINI<span>ARCADE</span></div>
+  <nav>
+    <a class="active" href="#">เกม</a>
+    <a href="#games">ยอดนิยม</a>
+    <a href="#howto">วิธีเล่น</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <small>🔥 เกมแนะนำวันนี้</small>
+      <h1>DODGE<br><span>RUSH</span></h1>
+      <p>หลบดาวตก เก็บเหรียญ และทำคะแนนให้สูงที่สุด</p>
+      <button onclick="openGame('dodge-rush')">▶ เล่นเกม</button>
     </div>
-    <div class="hud">
-        คะแนน <b id="score">0</b>  
-        ความเร็ว <b id="speed">10 m/s</b> 
-        ชีวิต <b id="lives">❤️❤️❤️</b>
+    <div class="hero-art">🚀 ☄️ 🪙</div>
+  </section>
+
+  <section id="games">
+    <div class="section-head">
+      <div>
+        <h2>เกมทั้งหมด</h2>
+        <p>เลือกเกมที่อยากเล่นได้เลย</p>
+      </div>
+      <input id="search" placeholder="🔎 ค้นหาเกม...">
     </div>
 
-    <div class="game-container">
-        <canvas id="game" width="900" height="560"></canvas>
-        
-        <!-- Modal เลือกระดับความยาก -->
-        <div id="difficulty-modal" class="modal">
-            <div class="modal-content">
-                <h2>เลือกระดับความยาก</h2>
-                <div class="diff-buttons">
-                    <button class="btn-diff baby" onclick="selectDifficulty('baby')">👶 Baby</button>
-                    <button class="btn-diff normal" onclick="selectDifficulty('normal')">😊 Normal</button>
-                    <button class="btn-diff hard" onclick="selectDifficulty('hard')">🔥 Hard</button>
-                    <button class="btn-diff hardcore" onclick="selectDifficulty('hardcore')">💀 Hardcore</button>
-                </div>
-            </div>
+    <div class="games">
+      <article class="card" data-name="dodge rush">
+        <div class="thumb blue">🚀</div>
+        <div class="info">
+          <h3>Dodge Rush</h3><p>Arcade • Action</p>
+          <button onclick="openGame('dodge-rush')">เล่น</button>
         </div>
+      </article>
 
-        <!-- Overlay ถอยหลัง 3 2 1 Start -->
-        <div id="countdown-overlay" class="countdown-overlay hidden">
-            <span id="countdown-text">3</span>
+      <article class="card" data-name="neon racer">
+        <div class="thumb purple">🏎️</div>
+        <div class="info">
+          <h3>Neon Racer</h3><p>Racing • Speed</p>
+          <button onclick="openGame('neon-racer')">เล่น</button>
         </div>
+      </article>
     </div>
+  </section>
 
-    <div class="controls">
-        <button id="start">▶ เริ่มเกม</button>
-        <span>← → หรือ A / D เพื่อเปลี่ยนเลน (ความเร็วเพิ่มทุกๆ 1 วินาที / ชนแล้วความเร็วลด)</span>
+  <section id="howto" class="howto">
+    <h2>วิธีใช้งาน</h2>
+    <p>เลือกเกม → เกมจะเปิดในหน้าต่างเล่น → กด <b>⌂ หน้าเกม</b> เพื่อกลับมาหน้านี้</p>
+  </section>
+</main>
+
+<div id="gameModal" class="modal hidden">
+  <div class="game-box">
+    <div class="game-bar">
+      <b id="gameTitle">Game</b>
+      <button onclick="closeGame()">✕</button>
     </div>
-    <script src="script.js"></script>
+    <iframe id="gameFrame" title="Game"></iframe>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
