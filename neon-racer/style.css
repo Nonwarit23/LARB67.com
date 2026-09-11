@@ -1,0 +1,181 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #091222;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.top {
+  height: 52px;
+  background: #121d31;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.top b {
+  font-size: 17px;
+}
+
+.top button,
+.controls button {
+  border: 0;
+  background: #ff5a1f;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 8px 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.top button:hover,
+.controls button:hover {
+  background: #ff743d;
+}
+
+.hud {
+  height: 42px;
+  background: #18253a;
+  padding: 12px;
+  font-size: 13px;
+}
+
+.hud b {
+  color: #ff8a55;
+}
+
+.game-container {
+  position: relative;
+  width: min(100%, 900px);
+  margin: auto;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #08142b;
+  image-rendering: auto;
+}
+
+.controls {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  color: #aebbd0;
+  font-size: 13px;
+}
+
+/* Modal & Countdown Overlay */
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: #18253a;
+  padding: 25px 35px;
+  border-radius: 12px;
+  border: 2px solid #2e4366;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #ffcf4a;
+}
+
+.diff-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-diff {
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.btn-diff:hover {
+  transform: scale(1.08);
+  filter: brightness(1.2);
+}
+
+.btn-diff.baby {
+  background: #4caf50;
+  color: #ffffff;
+}
+
+.btn-diff.normal {
+  background: #2196f3;
+  color: #ffffff;
+}
+
+.btn-diff.hard {
+  background: #ff9800;
+  color: #ffffff;
+}
+
+.btn-diff.hardcore {
+  background: #f44336;
+  color: #ffffff;
+}
+
+.countdown-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+#countdown-text {
+  font-size: 90px;
+  font-weight: bold;
+  color: #00f0ff;
+  text-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff;
+  animation: pulse 0.8s infinite alternate;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}

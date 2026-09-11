@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Racer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="top">
+        <b>🏎️ Neon Racer</b>
+        <button onclick="goHome()">⌂ หน้าเกม</button>
+    </div>
+    <div class="hud">
+        คะแนน <b id="score">0</b>  
+        ความเร็ว <b id="speed">10 m/s</b> 
+        ชีวิต <b id="lives">❤️❤️❤️</b>
+    </div>
+
+    <div class="game-container">
+        <canvas id="game" width="900" height="560"></canvas>
+        
+        <!-- Modal เลือกระดับความยาก -->
+        <div id="difficulty-modal" class="modal">
+            <div class="modal-content">
+                <h2>เลือกระดับความยาก</h2>
+                <div class="diff-buttons">
+                    <button class="btn-diff baby" onclick="selectDifficulty('baby')">👶 Baby</button>
+                    <button class="btn-diff normal" onclick="selectDifficulty('normal')">😊 Normal</button>
+                    <button class="btn-diff hard" onclick="selectDifficulty('hard')">🔥 Hard</button>
+                    <button class="btn-diff hardcore" onclick="selectDifficulty('hardcore')">💀 Hardcore</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay ถอยหลัง 3 2 1 Start -->
+        <div id="countdown-overlay" class="countdown-overlay hidden">
+            <span id="countdown-text">3</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="start">▶ เริ่มเกม</button>
+        <span>← → หรือ A / D เพื่อเปลี่ยนเลน (ความเร็วเพิ่มทุกๆ 1 วินาที / ชนแล้วความเร็วลด)</span>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
